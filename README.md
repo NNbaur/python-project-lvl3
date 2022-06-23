@@ -7,5 +7,6 @@
 
 <a href="https://codeclimate.com/github/NNbaur/python-project-lvl3/test_coverage"><img src="https://api.codeclimate.com/v1/badges/b34a94e5c22cad64295a/test_coverage" /></a>
 
+
     How to work page-loader:
 [![asciicast](https://asciinema.org/a/503708.svg)](https://asciinema.org/a/503708)
