@@ -1,6 +1,6 @@
 import argparse
 import os
-from page_loader.build_path.page_loader import download
+from page_loader.build_path.loader import download
 
 
 def main():

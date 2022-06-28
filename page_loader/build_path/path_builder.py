@@ -2,12 +2,12 @@ import os
 import re
 
 
-def make_path(site: str, directory: str) -> str:
-    # Build address name without scheme(http, https)
+def make_html_path(site: str, directory: str) -> str:
     clear_name = re.match(
-        r'(^[\w]*://)?([\w.]*[/\w!@#$%^&*()_+=?]*)', site
+        r'(^[\w]*://)?(.*)',
+        site
     ).group(2)
-    # Substitute symbols, besides letters and numbers in address name to '-'
-    format_name = re.sub(r'[\W_]', '-', clear_name) + '.html'
+    url, ext = os.path.splitext(clear_name)
+    format_name = re.sub(r'[\W_]', '-', url) + '.html'
     path = os.path.join(directory, format_name)
     return path
