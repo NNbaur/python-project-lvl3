@@ -22,6 +22,7 @@ jobs:
           pip install pytest
           pip install pytest-cov
           pip install requests
+          pip install bs4
           make install
       - name: Run linter
         run:
