@@ -8,12 +8,12 @@ from page_loader.build_path.update_img_urls import rebase_img_urls
 
 
 def test_download():
-    url = 'https://www.wikipedia.org'
+    url = 'www.wikipedia.org'
     with tempfile.TemporaryDirectory() as tmpdirname:
         full_path = download(url, tmpdirname)
         assert os.path.exists(full_path)
     error_url = 'https://www.wikipsxedia.org'
-    error_message = 'Failed to connect. Check, that URL is correct'
+    error_message = 'Something goes wrong. Please, check url and path.'
     with tempfile.TemporaryDirectory() as tmpdirname:
         download(error_url, tmpdirname)
         assert error_message

@@ -8,5 +8,10 @@
 <a href="https://codeclimate.com/github/NNbaur/python-project-lvl3/test_coverage"><img src="https://api.codeclimate.com/v1/badges/b34a94e5c22cad64295a/test_coverage" /></a>
 
 
-    How to work page-loader:
+How to work page-loader:
+
+    Download html-file:
 [![asciicast](https://asciinema.org/a/503708.svg)](https://asciinema.org/a/503708)
+
+    Download html-file + images:
+[![asciicast](https://asciinema.org/a/504919.svg)](https://asciinema.org/a/504919)
