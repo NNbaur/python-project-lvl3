@@ -15,3 +15,6 @@ How to work page-loader:
 
     Download html-file + images:
 [![asciicast](https://asciinema.org/a/504919.svg)](https://asciinema.org/a/504919)
+
+    Download html-file + all files from tags(img, link, script):
+[![asciicast](https://asciinema.org/a/505097.svg)](https://asciinema.org/a/505097)
