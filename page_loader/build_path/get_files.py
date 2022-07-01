@@ -1,15 +1,22 @@
 import os
+import logging
 from bs4 import BeautifulSoup
-from urllib.parse import urljoin, urlparse
 from urllib.request import urlretrieve
-from page_loader.build_path.get_content import get_content
+from urllib.parse import urljoin, urlparse
+from page_loader.build_path.myexception import KnownError
 from page_loader.build_path.path_dir import make_dir_path
+from page_loader.build_path.get_content import get_content
 from page_loader.build_path.path_file import make_file_path
 
 
 def download_files(html_path, site, directory):
     dir_path = make_dir_path(site, directory)
-    os.mkdir(dir_path)
+    try:
+        os.mkdir(dir_path)
+    except OSError as e:
+        logging.debug(e)
+        logging.error('Error. This directory already exists.')
+        raise KnownError('Error. Check log!') from e
     site_domen = urlparse(site).netloc
     content = get_content(html_path)
     soup = BeautifulSoup(content, "html.parser")

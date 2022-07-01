@@ -1,7 +1,10 @@
 import os
+import pytest
 import tempfile
 from bs4 import BeautifulSoup
+from page_loader.build_path.myexception import KnownError
 from page_loader.build_path.loader import download
+from page_loader.build_path.path_dir import make_dir_path
 from page_loader.build_path.get_content import get_content
 from page_loader.build_path.get_files import download_files
 from page_loader.build_path.update_html import update_html_urls
@@ -13,12 +16,14 @@ def test_download():
     with tempfile.TemporaryDirectory() as tmpdirname:
         full_path = download(url, tmpdirname)
         assert os.path.exists(full_path)
-    error_url = 'https://www.wikipsxedia.org'
-    error_message = 'Something goes wrong. Please, check url and path.'
 
-    with tempfile.TemporaryDirectory() as tmpdirname:
-        download(error_url, tmpdirname)
-        assert error_message
+
+def test_download_exception():
+    with pytest.raises(KnownError) as e:
+        error_url = 'https://www.wikipsxedia.org'
+        with tempfile.TemporaryDirectory() as tmpdirname:
+            download(error_url, tmpdirname)
+    assert str(e.value) == 'Error. Check log.'
 
 
 def test_content_html():
@@ -52,6 +57,17 @@ def test_download_files():
         assert os.path.isfile(link_path)
         script_path = exp_files['script'][0]
         assert os.path.isfile(script_path)
+
+
+def test_download_files_exception():
+    with pytest.raises(KnownError) as a:
+        url = 'https://www.wikipedia.org'
+        html_path = 'tests/fixtures/origin.html'
+        with tempfile.TemporaryDirectory() as temp_dir:
+            dir_path = make_dir_path(url, temp_dir)
+            os.mkdir(dir_path)
+            download_files(html_path, url, temp_dir)
+    assert str(a.value) == 'Error. Check log!'
 
 
 def test_update_html():
