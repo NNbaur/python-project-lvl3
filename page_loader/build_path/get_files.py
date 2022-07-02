@@ -3,7 +3,6 @@ import logging
 import requests
 from progress.bar import FillingSquaresBar
 from bs4 import BeautifulSoup
-from urllib.request import urlretrieve
 from urllib.parse import urljoin, urlparse
 from page_loader.build_path.myexception import KnownError
 from page_loader.build_path.path_dir import make_dir_path
@@ -54,5 +53,7 @@ def download_tag_files(soup, tag, attr, site_domen, site, dir_path, files):
                 logging.debug(e)
                 logging.error('Connection problem. Check that url is correct')
                 raise KnownError('Error. Check log.') from e
-            urlretrieve(full_url, file_path)
+            content = req.content
+            with open(file_path, 'wb') as f:
+                f.write(content)
     logging.debug(f'Files from tags {tag} downloaded')
