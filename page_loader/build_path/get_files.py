@@ -11,10 +11,10 @@ from page_loader.build_path.path_file import make_file_path
 
 
 def download_files(html_path, site, directory):
-    dir_path = make_dir_path(site)
-    print(dir_path)
+    dir_path_rel = make_dir_path(site)
+    dir_path_full = os.path.join(directory, dir_path_rel)
     try:
-        os.mkdir(os.path.join(directory, dir_path))
+        os.mkdir(dir_path_full)
     except OSError as e:
         logging.debug(e)
         logging.error('Error. This directory already exists.')
@@ -30,14 +30,17 @@ def download_files(html_path, site, directory):
         for tag, attr in tag_dict.items():
             download_tag_files(
                 soup, tag, attr, site_domen,
-                site, dir_path, files
+                site, dir_path_rel, dir_path_full, files
             )
             progbar.next()
     logging.debug('All files downloaded')
     return files
 
 
-def download_tag_files(soup, tag, attr, site_domen, site, dir_path, files):
+def download_tag_files(
+        soup, tag, attr, site_domen,
+        site, dir_path_rel, dir_path_full, files
+):
 
     for link in soup.find_all(tag):
         url = link.get(attr)
@@ -45,9 +48,9 @@ def download_tag_files(soup, tag, attr, site_domen, site, dir_path, files):
 
         if domen == site_domen or domen == '':
             full_url = urljoin(site, url)
-            file_path = make_file_path(full_url, dir_path)
-            print(file_path)
-            files[tag].append(file_path)
+            file_path_rel = make_file_path(full_url, dir_path_rel)
+            file_path_full = make_file_path(full_url, dir_path_full)
+            files[tag].append(file_path_rel)
             try:
                 req = requests.get(full_url)
                 req.raise_for_status()
@@ -56,6 +59,6 @@ def download_tag_files(soup, tag, attr, site_domen, site, dir_path, files):
                 logging.error('Connection problem. Check that url is correct')
                 raise KnownError('Error. Check log.') from e
             content = req.content
-            with open(file_path, 'wb') as f:
+            with open(file_path_full, 'wb') as f:
                 f.write(content)
     logging.debug(f'Files from tags {tag} downloaded')
