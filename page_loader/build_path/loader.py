@@ -15,6 +15,7 @@ def download(site: str, directory: str) -> str:
     if urlparse(site).scheme == '':
         site = f'https://{site}'
     path = make_html_path(site, directory)
+    print(path)
 
     try:
         req = requests.get(site)
@@ -27,6 +28,7 @@ def download(site: str, directory: str) -> str:
     content = req.text
     with open(path, 'w', encoding='utf-8') as file:
         file.write(content)
+    print('done')
     urls = download_files(path, site, directory)
     update_html_urls(path, site, urls)
     return path

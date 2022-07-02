@@ -11,9 +11,10 @@ from page_loader.build_path.path_file import make_file_path
 
 
 def download_files(html_path, site, directory):
-    dir_path = make_dir_path(site, directory)
+    dir_path = make_dir_path(site)
+    print(dir_path)
     try:
-        os.mkdir(dir_path)
+        os.mkdir(os.path.join(directory, dir_path))
     except OSError as e:
         logging.debug(e)
         logging.error('Error. This directory already exists.')
@@ -45,6 +46,7 @@ def download_tag_files(soup, tag, attr, site_domen, site, dir_path, files):
         if domen == site_domen or domen == '':
             full_url = urljoin(site, url)
             file_path = make_file_path(full_url, dir_path)
+            print(file_path)
             files[tag].append(file_path)
             try:
                 req = requests.get(full_url)
