@@ -22,6 +22,7 @@ def download(site: str, directory: str) -> str:
         logging.debug(e)
         logging.error('Connection problem. Check that url is correct')
         raise KnownError('Error. Check log.') from e
+    logging.debug('Connection established')
     content = req.text
     with open(path, 'w', encoding='utf-8') as file:
         file.write(content)

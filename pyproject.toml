@@ -16,6 +16,7 @@ pytest = "^5.2"
 pytest-cov = "^3.0.0"
 requests = "^2.25.1"
 beautifulsoup4 = "^4.8.2"
+progress = "^1.6"
 
 [tool.poetry.scripts]
 page-loader = 'page_loader.scripts.load_page:main'

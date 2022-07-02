@@ -1,5 +1,6 @@
 import os
 import logging
+from progress.bar import FillingSquaresBar
 from bs4 import BeautifulSoup
 from urllib.request import urlretrieve
 from urllib.parse import urljoin, urlparse
@@ -17,24 +18,21 @@ def download_files(html_path, site, directory):
         logging.debug(e)
         logging.error('Error. This directory already exists.')
         raise KnownError('Error. Check log!') from e
+    logging.debug('Directory created')
     site_domen = urlparse(site).netloc
     content = get_content(html_path)
     soup = BeautifulSoup(content, "html.parser")
 
+    tag_dict = {'img': 'src', 'link': 'href', 'script': 'src'}
     files = {'img': [], 'link': [], 'script': []}
-
-    download_tag_files(
-        soup, 'img', 'src', site_domen,
-        site, dir_path, files
-    )
-    download_tag_files(
-        soup, 'link', 'href', site_domen,
-        site, dir_path, files
-    )
-    download_tag_files(
-        soup, 'script', 'src', site_domen,
-        site, dir_path, files
-    )
+    with FillingSquaresBar('Downloading...', max=len(files)) as progbar:
+        for tag, attr in tag_dict.items():
+            download_tag_files(
+                soup, tag, attr, site_domen,
+                site, dir_path, files
+            )
+            progbar.next()
+    logging.debug('All files downloaded')
     return files
 
 
@@ -49,3 +47,4 @@ def download_tag_files(soup, tag, attr, site_domen, site, dir_path, files):
             file_path = make_file_path(full_url, dir_path)
             files[tag].append(file_path)
             urlretrieve(full_url, file_path)
+    logging.debug(f'Files from tags {tag} downloaded')
