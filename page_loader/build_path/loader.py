@@ -18,7 +18,8 @@ def download(site: str, directory: str) -> str:
 
     try:
         req = requests.get(site)
-    except OSError as e:
+        req.raise_for_status()
+    except requests.exceptions.RequestException as e:
         logging.debug(e)
         logging.error('Connection problem. Check that url is correct')
         raise KnownError('Error. Check log.') from e
