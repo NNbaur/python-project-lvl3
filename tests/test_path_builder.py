@@ -21,17 +21,16 @@ def test_make_path_html():
 
 def test_make_dir_path():
     url1 = 'https://www.test.io/index.html'
-    path = 'home/mydir'
-    result1 = make_dir_path(url1, path)
-    exception1 = 'home/mydir/www-test-io-index_files'
+    result1 = make_dir_path(url1)
+    exception1 = 'www-test-io-index_files'
     assert result1 == exception1
     url2 = 'test.io/index/try/one'
-    result2 = make_dir_path(url2, path)
-    exception2 = 'home/mydir/test-io-index-try-one_files'
+    result2 = make_dir_path(url2)
+    exception2 = 'test-io-index-try-one_files'
     assert result2 == exception2
     url3 = 'http://test.io/index/?page=2'
-    result3 = make_dir_path(url3, path)
-    exception3 = 'home/mydir/test-io-index--page-2_files'
+    result3 = make_dir_path(url3)
+    exception3 = 'test-io-index--page-2_files'
     assert result3 == exception3
 
 
@@ -41,9 +40,9 @@ def test_make_file_path():
     result1 = make_file_path(url1, path)
     exception1 = 'home/mydir/www-test-io-index.jpg'
     assert result1 == exception1
-    url2 = 'test.io/index/try/one.svg'
+    url2 = 'test.io/index/try/one'
     result2 = make_file_path(url2, path)
-    exception2 = 'home/mydir/test-io-index-try-one.svg'
+    exception2 = 'home/mydir/test-io-index-try-one.html'
     assert result2 == exception2
     url3 = 'http://test.io/?page=2/lls.jpg.Sdx/ava.png'
     result3 = make_file_path(url3, path)

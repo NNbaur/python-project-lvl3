@@ -52,11 +52,11 @@ def test_download_files():
     with tempfile.TemporaryDirectory() as temp_dir:
         exp_files = download_files(html_path, url, temp_dir)
         img_path = exp_files['img'][0]
-        assert os.path.isfile(img_path)
+        assert os.path.isfile(os.path.join(temp_dir, img_path))
         link_path = exp_files['link'][0]
-        assert os.path.isfile(link_path)
+        assert os.path.isfile(os.path.join(temp_dir, link_path))
         script_path = exp_files['script'][0]
-        assert os.path.isfile(script_path)
+        assert os.path.isfile(os.path.join(temp_dir, script_path))
 
 
 def test_download_files_exception():
@@ -64,8 +64,8 @@ def test_download_files_exception():
         url = 'https://www.wikipedia.org'
         html_path = 'tests/fixtures/origin.html'
         with tempfile.TemporaryDirectory() as temp_dir:
-            dir_path = make_dir_path(url, temp_dir)
-            os.mkdir(dir_path)
+            dir_path = make_dir_path(url)
+            os.mkdir(os.path.join(temp_dir, dir_path))
             download_files(html_path, url, temp_dir)
     assert str(a.value) == 'Error. Check log!'
 
