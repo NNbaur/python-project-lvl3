@@ -7,6 +7,7 @@ from page_loader.build_path.loader import download
 from page_loader.build_path.path_dir import make_dir_path
 from page_loader.build_path.get_content import get_content
 from page_loader.build_path.get_files import download_files
+from page_loader.build_path.get_files import download_tag_files
 from page_loader.build_path.update_html import update_html_urls
 
 
@@ -68,6 +69,24 @@ def test_download_files_exception():
             os.mkdir(os.path.join(temp_dir, dir_path))
             download_files(html_path, url, temp_dir)
     assert str(a.value) == 'Error. Check log!'
+
+
+def test_download_tag_files_exception():
+    with pytest.raises(KnownError) as a:
+        exp_content = get_content('tests/fixtures/wrong_url.html')
+        exp_soup = BeautifulSoup(exp_content, 'html.parser')
+        tag = 'img'
+        attr = 'src'
+        site_domen = 'www.wikipedia.org'
+        site = 'https://www.wikipedia.org'
+        dir_path_rel = 'example/blank'
+        dir_path_full = 'home/example/blank'
+        files = {'img': [], 'link': [], 'script': []}
+        download_tag_files(
+            exp_soup, tag, attr, site_domen,
+            site, dir_path_rel, dir_path_full, files
+        )
+        assert str(a.value) == 'Error. Check log.'
 
 
 def test_update_html():
