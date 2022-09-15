@@ -24,6 +24,7 @@ jobs:
           pip install requests
           pip install bs4
           pip install progress
+          pip install requests_mock
           make install
       - name: Run linter
         run:

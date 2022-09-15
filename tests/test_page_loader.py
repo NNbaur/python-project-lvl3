@@ -1,6 +1,8 @@
 import os
 import pytest
+import requests
 import tempfile
+import requests_mock
 from bs4 import BeautifulSoup
 from page_loader.build_path.myexception import KnownError
 from page_loader.build_path.loader import download
@@ -31,10 +33,9 @@ def test_content_html():
     url = 'https://www.wikipedia.org'
     exp_content = get_content('tests/fixtures/result1.html')
     exp_res = BeautifulSoup(exp_content, 'html.parser')
-
-    with tempfile.TemporaryDirectory() as tmpdirname:
-        path = download(url, tmpdirname)
-        content = get_content(path)
+    with requests_mock.Mocker() as m:
+        m.get(url, text=exp_content)
+        content = requests.get(url).text
         result = BeautifulSoup(content, 'html.parser')
         result.img['src'] = 'result1_files/img1.png'
         links = result.find_all('link')

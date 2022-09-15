@@ -1,4 +1,2 @@
-
-
 class KnownError(Exception):
     pass

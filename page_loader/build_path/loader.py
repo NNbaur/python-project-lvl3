@@ -8,6 +8,7 @@ from page_loader.build_path.update_html import update_html_urls
 
 
 def download(site: str, directory: str) -> str:
+    # Set format for debugger
     FORMAT = "%(asctime)s - %(levelname)s" \
              "- %(funcName)s: %(lineno)d - %(message)s"
     logging.basicConfig(format=FORMAT, level=logging.DEBUG)
@@ -25,8 +26,11 @@ def download(site: str, directory: str) -> str:
         raise KnownError('Error. Check log.') from e
     logging.debug('Connection established')
     content = req.text
+    # Download original html
     with open(path, 'w', encoding='utf-8') as file:
         file.write(content)
+    # Take original html and download files
     urls = download_files(path, site, directory)
+    # Update original html with local urls
     update_html_urls(path, site, urls)
     return path
